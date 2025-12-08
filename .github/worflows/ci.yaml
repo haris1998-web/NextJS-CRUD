@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Restore Next.js cache
+      uses: actions/cache@v4
+      with:
+        path: .next/cache
+        key: nextjs-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+
+    - name: Install dependencies
+      run: npm Install
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Type-check code
+      run: npm run typecheck
+
+    - name: Prisma Generate
+      run: npx prisma generate
+
+    - name: Build Next.js application
+      run: npm run build
+
+    - name: Run tests
+      run: npm test --if-present
+
+    - name: Reset SQLite DB
+      run: rm -f ./prisma/dev.db && npx prisma migrate reset --force
+
+    - name: Prisma Generate
+      run: npx prisma generate
+
+    - name: Build Next.js
+      run: npm run build
