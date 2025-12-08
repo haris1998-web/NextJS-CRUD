@@ -56,7 +56,6 @@ export default function ItemsPage() {
 
     useEffect(() => {
         fetchItems();
-        console.log(items);
     }, []);
 
     return (
