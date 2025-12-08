@@ -14,3 +14,11 @@ export interface ItemUpdate {
 export interface ItemDelete {
     id: number;
 }
+
+export interface Item {
+    id: number;
+    name: string;
+    description?: string;
+    quantity: number;
+    createdAt: string;
+}
