@@ -18,7 +18,7 @@ export default function ItemTable({ items, onEdit, onDelete }: Props) {
                 </tr>
             </thead>
             <tbody>
-                {items.map((item) => (
+                {items?.map((item) => (
                     <tr key={item.id} className="border-b">
                         <td className="p-2">{item.name}</td>
                         <td className="p-2">{item.description}</td>
